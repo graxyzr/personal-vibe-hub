@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -12,15 +14,12 @@ export function GlassCard({ children, className, title, ariaLabel }: GlassCardPr
     return (
         <section
             aria-label={ariaLabel || title}
-            className={cn(
-                'backdrop-blur-md bg-white/10 rounded-2xl p-6',
-                'border border-white/20 shadow-xl',
-                'transition-all duration-300 hover:bg-white/15',
-                className
-            )}
+            className={cn('glass-card card-enter p-6', className)}
         >
             {title && (
-                <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/40 mb-4 select-none">
+                    {title}
+                </p>
             )}
             {children}
         </section>

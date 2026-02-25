@@ -1,25 +1,25 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { DM_Sans } from 'next/font/google'
 import './globals.css'
 import { AnimatedBackground } from '../components/ui/AnimatedBackground'
 
-const inter = Inter({ subsets: ['latin'] })
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-sans',
+})
 
 export const metadata: Metadata = {
   title: 'Personal Productivity Vibe Hub',
   description: 'Seu dashboard pessoal de produtividade com estilo Bento e Glassmorphism',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>
+      <body className={`${dmSans.className} antialiased`}>
         <AnimatedBackground />
-        <main className="relative min-h-screen p-4 md:p-8">
+        <main className="relative min-h-screen py-8 md:py-12 flex justify-center">
           {children}
         </main>
       </body>
