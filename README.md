@@ -1,4 +1,3 @@
-```markdown
 # Personal Productivity Vibe Hub 🚀
 
 <div align="center">
