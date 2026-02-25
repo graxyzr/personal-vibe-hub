@@ -2,60 +2,60 @@
 
 import { useState, useEffect } from 'react'
 import { GlassCard } from '@/components/ui/GlassCard'
-import { Search, MapPin, Droplets, Wind } from 'lucide-react'
-
-interface WeatherData {
-    city: string
-    temperature: number
-    description: string
-    humidity: number
-    windSpeed: number
-    icon: string
-}
+import { Search, MapPin, Droplets, Wind, AlertCircle } from 'lucide-react'
+import { useWeatherReal } from '@/lib/hooks/useWeatherReal'
 
 export function WeatherWidget() {
-    const [weather, setWeather] = useState<WeatherData>({
-        city: 'São Paulo',
-        temperature: 22,
-        description: 'Parcialmente nublado',
-        humidity: 65,
-        windSpeed: 12,
-        icon: '03d'
-    })
-    const [loading, setLoading] = useState(false)
+    const { weather, loading, error, fetchWeather } = useWeatherReal()
     const [searchInput, setSearchInput] = useState('')
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+        // Cidade padrão ao carregar
+        fetchWeather('São Paulo')
+    }, [])
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault()
         if (!searchInput.trim()) return
-
-        setLoading(true)
-        // Simula busca
-        setTimeout(() => {
-            setWeather({
-                city: searchInput,
-                temperature: Math.floor(Math.random() * 15) + 20,
-                description: ['Ensolarado', 'Nublado', 'Chuva fraca'][Math.floor(Math.random() * 3)],
-                humidity: Math.floor(Math.random() * 30) + 50,
-                windSpeed: Math.floor(Math.random() * 15) + 5,
-                icon: '01d'
-            })
-            setLoading(false)
-            setSearchInput('')
-        }, 800)
+        fetchWeather(searchInput)
+        setSearchInput('')
     }
 
     const getWeatherIcon = (iconCode: string) => {
+        // Mapeia os códigos da OpenWeather para emojis
         const iconMap: Record<string, string> = {
-            '01d': '☀️',
-            '02d': '⛅',
-            '03d': '☁️',
-            '04d': '☁️',
-            '09d': '🌧️',
-            '10d': '🌦️',
-            '11d': '⛈️',
+            '01d': '☀️', // céu limpo dia
+            '01n': '🌙', // céu limpo noite
+            '02d': '⛅', // poucas nuvens dia
+            '02n': '☁️', // poucas nuvens noite
+            '03d': '☁️', // nuvens dispersas
+            '03n': '☁️',
+            '04d': '☁️', // nublado
+            '04n': '☁️',
+            '09d': '🌧️', // chuva leve
+            '09n': '🌧️',
+            '10d': '🌦️', // chuva dia
+            '10n': '🌧️', // chuva noite
+            '11d': '⛈️', // tempestade
+            '11n': '⛈️',
+            '13d': '❄️', // neve
+            '13n': '❄️',
+            '50d': '🌫️', // névoa
+            '50n': '🌫️',
         }
         return iconMap[iconCode] || '☀️'
+    }
+
+    if (!mounted) {
+        return (
+            <GlassCard ariaLabel="Widget de clima" title="Clima">
+                <div className="flex justify-center items-center h-48">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white" />
+                </div>
+            </GlassCard>
+        )
     }
 
     return (
@@ -66,7 +66,7 @@ export function WeatherWidget() {
                         type="text"
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
-                        placeholder="Buscar cidade..."
+                        placeholder="Ex: Londres, Tóquio, Nova York..."
                         className="w-full px-4 py-2 pr-10 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
                         disabled={loading}
                     />
@@ -80,18 +80,31 @@ export function WeatherWidget() {
                 </div>
             </form>
 
-            {loading ? (
+            {loading && (
                 <div className="flex justify-center items-center h-32">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white" />
                 </div>
-            ) : (
+            )}
+
+            {error && (
+                <div className="flex flex-col items-center justify-center h-32 text-center">
+                    <AlertCircle className="w-8 h-8 text-red-300 mb-2" />
+                    <p className="text-red-300">{error}</p>
+                </div>
+            )}
+
+            {weather && !loading && !error && (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                             <MapPin className="w-5 h-5 text-white/70" />
-                            <h3 className="text-xl font-semibold text-white">{weather.city}</h3>
+                            <h3 className="text-xl font-semibold text-white">
+                                {weather.city}, {weather.country}
+                            </h3>
                         </div>
-                        <span className="text-4xl">{getWeatherIcon(weather.icon)}</span>
+                        <span className="text-4xl" role="img" aria-label={weather.description}>
+                            {getWeatherIcon(weather.icon)}
+                        </span>
                     </div>
 
                     <div className="text-center">
