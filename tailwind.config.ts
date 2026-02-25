@@ -6,14 +6,6 @@ const config: Config = {
         './components/**/*.{js,ts,jsx,tsx,mdx}',
         './app/**/*.{js,ts,jsx,tsx,mdx}',
     ],
-    theme: {
-        extend: {
-            colors: {
-                border: 'rgba(255, 255, 255, 0.1)',
-            },
-        },
-    },
-    plugins: [],
 }
 
 export default config

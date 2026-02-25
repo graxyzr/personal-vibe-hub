@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
   :root {
@@ -10,15 +8,16 @@
   }
 
   * {
-    @apply border-white/10;
+    border-color: color-mix(in oklab, white 10%, transparent);
   }
 
   html {
-    @apply scroll-smooth;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-transparent text-white;
+    background-color: transparent;
+    color: white;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -29,28 +28,39 @@
   }
 }
 
-/* Estilos de foco para acessibilidade (usando CSS puro, não @apply) */
+/* Estilos de foco para acessibilidade */
 *:focus-visible {
   outline: 2px solid white;
   outline-offset: 2px;
   border-radius: 2px;
 }
 
-/* Custom scrollbar (CSS puro) */
+/* Custom scrollbar */
 .overflow-y-auto::-webkit-scrollbar {
   width: 6px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: color-mix(in oklab, white 5%, transparent);
   border-radius: 9999px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: color-mix(in oklab, white 20%, transparent);
   border-radius: 9999px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: color-mix(in oklab, white 30%, transparent);
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
 }
