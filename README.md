@@ -180,7 +180,7 @@ Este projeto está sob a licença MIT.
 
 **Greice Braga Pereira**
 - GitHub: [@graxyzr](https://github.com/graxyzr)
-- LinkedIn: [Greice Braga Pereira](https://www.linkedin.com/in/greice-pereira-b04a04318/)
+- LinkedIn: [Greice Pereira](https://www.linkedin.com/in/greice-pereira-b04a04318/)
 
 ## 🙏 Agradecimentos
 
