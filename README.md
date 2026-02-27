@@ -104,7 +104,7 @@ personal-vibe-hub/
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/personal-vibe-hub.git
+git clone https://github.com/graxyzr/personal-vibe-hub.git
 cd personal-vibe-hub
 ```
 
